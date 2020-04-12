@@ -1,4 +1,4 @@
-﻿using ExileCore.Shared.Interfaces;
+using ExileCore.Shared.Interfaces;
 using ExileCore.Shared.Nodes;
 using ExileCore.Shared.Attributes;
 
@@ -203,6 +203,13 @@ namespace CoPilot
         public HotkeyNode customKey { get; set; }
         #endregion
 
+        #region Storm Brand
+        [Menu("Enable", 131, 130)]
+        public ToggleNode stormBrandEnabled { get; set; }
+        [Menu("Max. Brands", 132, 130)]
+        public RangeNode<int> brandStacks { get; set; }
+        #endregion
+
         #region Input Keys
         [Menu("boundSkill2:")]
         public HotkeyNode InputKey1 { get; set; }
@@ -332,6 +339,9 @@ namespace CoPilot
             customEsPct = new RangeNode<float>(0f, 0f, 100f);
             customCooldown = new RangeNode<int>(4000, 1000, 10000);
             customKey = new HotkeyNode(Keys.T);
+
+            stormBrandEnabled = new ToggleNode(false);
+            brandStacks = new RangeNode<int>(5, 0, 10);
 
             InputKey1 = new HotkeyNode(Keys.Z);
             InputKey3 = new HotkeyNode(Keys.Q);
