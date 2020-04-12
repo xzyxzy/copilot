@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -666,7 +666,24 @@ namespace CoPilot
                 LogError(e.ToString());
             }
 
-
+            try
+            {
+                // Storm Brand
+                if (Settings.stormBrandEnabled)
+                    ImGui.PushStyleColor(ImGuiCol.Header, green);
+                else
+                    ImGui.PushStyleColor(ImGuiCol.Header, red);
+                ImGui.PushID(16);
+                if (ImGui.TreeNodeEx("Storm Brand", collapsingHeaderFlags))
+                {
+                    Settings.stormBrandEnabled.Value = ImGuiExtension.Checkbox("Enabled", Settings.stormBrandEnabled.Value);
+                    Settings.brandStacks.Value = ImGuiExtension.IntSlider("Stacks", Settings.brandStacks);
+                }
+            }
+            catch (Exception e)
+            {
+                LogError(e.ToString());
+            }
 
             try
             {
@@ -1167,6 +1184,24 @@ namespace CoPilot
                                     lastCustom = DateTime.Now;
                                 }
 
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogError(e.ToString());
+                        }
+                    }
+                    #endregion
+                    #region storm brand
+                    if (Settings.stormBrandEnabled)
+                    {
+                        try
+                        {
+                            var stormBrand = GameController.Game.IngameState.Data.LocalPlayer.GetComponent<Actor>().ActorSkills.Find(x => x.InternalName == "storm_brand");
+                            if (Ready() && (DateTime.Now - lastCustom).TotalMilliseconds > 200 && stormBrand.SkillUseStage < Settings.brandStacks)
+                            {
+                                KeyPress(GetSkillInputKey(stormBrand.SkillSlotIndex));
+                                lastCustom = DateTime.Now;
                             }
                         }
                         catch (Exception e)
